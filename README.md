@@ -1,7 +1,7 @@
 # TopologyGenerator
 A generator for constructing dynamic network topology. This generator can support routing or transport research on network topology with high mobility, such as satellite networks.
 
-#Usage (this project is still under heavy development)
+# Usage (this project is still under heavy development)
 
 Assume you have already installed the docker environment(please check [Get Docker](https://docs.docker.com/get-docker/) and Python.
 
@@ -33,5 +33,12 @@ Run the generation command.
 ```
 
 Done. Contaioners will be created for emulation.
+
+## Clean up
+Clean all containers.
+```bash
+./clean_emulator.sh
+```
+
 
 
