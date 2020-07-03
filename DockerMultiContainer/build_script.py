@@ -26,10 +26,15 @@ def main():
         for satellite_number in range(satellite_per_plan):
             container = "  StarLink-Orbit-" + str(orbit_number) + "-Satellite-" + str(satellite_number) + \
                         ":\n" \
-                        "    image: ubuntu16_04\n" \
+                        "    image: ubuntu:16.04\n" \
                         "    tty: true\n" \
                         "\n";
             f.write(container);
+        network="networks:\n"\
+                "  default:\n"\
+                "    external:\n"\
+                "      name: star_bridge\n"
+        f.write(network);
         # close file.
         f.close();
 
