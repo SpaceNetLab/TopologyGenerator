@@ -38,22 +38,6 @@ DockerMultiContainer/starlink
 *_g
 \#*
 .\#*
-/third_party/FFmpeg.config
-/third_party/FFmpeg/.version
-/third_party/FFmpeg/ffmpeg
-/third_party/FFmpeg/ffplay
-/third_party/FFmpeg/ffprobe
-/third_party/FFmpeg/ffmpeg_g
-/third_party/FFmpeg/ffplay_g
-/third_party/FFmpeg/ffprobe_g
-/third_party/FFmpeg/config.asm
-/third_party/FFmpeg/config.h
-/third_party/FFmpeg/coverage.info
-/third_party/FFmpeg/avversion.h
-/third_party/FFmpeg/lcov/
-/third_party/FFmpeg/src
-/third_party/FFmpeg/mapfile
-/third_party/FFmpeg/tools/python/__pycache__/
 
 *.264
 *.h264
@@ -71,4 +55,69 @@ DockerMultiContainer/starlink
 *.pyc
 *.pgd
 *.pgc
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+third-party/c-logger/*.dSYM/
+
+# Project
+third-party/c-logger/build/
+third-party/c-logger/build_debug/
+
+# General
+*.a
+third-party/c-logger/*.dSYM/
+*.la
+*.lo
+*.o
+*.opensdf
+*.orig
+*.sdf
+*.suo
+*.swp
+*.tests
+*.vcxproj.filters
+*.vcxproj.user
+*~
+.git
+TAGS
+
+# Mac/Xcode-specfic
+xcuserdata
+contents.xcworkspacedata
+.DS_Store
+._*
+
+*.cmake
+*.bin
+*.make
 
