@@ -1,9 +1,23 @@
 #include <stdio.h>
 #include "uv.h"
-#include <unistd.h>
 #include <stdlib.h>
 #include "logger.h"
 
+#if(WIN32)
+#include "windows.h"
+#else
+#include <unistd.h>
+#endif
+
+void
+tg_sleep(int32_t time)
+{
+#if(WIN32)
+    Sleep(time*1000);
+#else
+    sleep(time);
+#endif
+}
 /**
  * reference: https://nikhilm.github.io/uvbook/threads.html
  **/
@@ -11,7 +25,7 @@ void hare(void *arg) {
   int tracklen = *((int *) arg);
   while (tracklen) {
     tracklen--;
-    sleep(1);
+    tg_sleep(1);
     fprintf(stderr, "Hare ran another step\n");
   }
   fprintf(stderr, "Hare done running!\n");
