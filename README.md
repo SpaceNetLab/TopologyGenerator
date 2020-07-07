@@ -3,17 +3,7 @@ A generator for constructing dynamic network topology. This generator can suppor
 
 # Usage (this project is still under heavy development)
 
-Assume you have already installed the docker environment(please check [Get Docker](https://docs.docker.com/get-docker/) and Python.
-
-Push the system limit by improving the constraint on maximal thread number.
-
-```bash
-ulimit -n 1000
-export COMPOSE_HTTP_TIMEOUT=1000
-export COMPOSE_PARALLEL_LIMIT=10
-docker-compose down —-remove-orphans
-docker network prune
-```
+Assume you have already installed the docker environment(please check [Get Docker](https://docs.docker.com/get-docker/ ) and Python.
 
 To run the emulation of constellation, fist run the `build_script.py` in `DockerMultiContainer` folder to generate the bash files.
 
@@ -29,11 +19,6 @@ Modify the orbit number and satellite number per orbit for your constellation. P
 #build the constellation of starlink, where 1584 satellites into 72 orbital planes of 22 satellites each
 ORBIT_NUM=72
 SATELLITE_PER_ORBIT=22
-```
-Create a docker network for inter-connecting all containers. 
-
-```bash
-docker network create -d bridge star_bridge
 ```
 
 Run the generation command.

@@ -3,11 +3,6 @@
 ORBIT_NUM=1584
 SATELLITE_PER_ORBIT=1
 
-#remove bridges
-docker network rm star_bridge_0
-docker network rm star_bridge_1
-docker network rm star_bridge_2
-
 for i in `seq 1 $ORBIT_NUM`;
 do
   ORBIT_INDEX=`expr $i - 1`
@@ -19,5 +14,10 @@ do
   cd ../..
 done
 
+#remove bridges
+docker network rm star_bridge_0
+docker network rm star_bridge_1
+docker network rm star_bridge_2
 docker network prune & y
 rm -r starlink
+echo "clean emulator done."
