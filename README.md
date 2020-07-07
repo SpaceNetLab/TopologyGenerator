@@ -5,6 +5,14 @@ A generator for constructing dynamic network topology. This generator can suppor
 
 Assume you have already installed the docker environment(please check [Get Docker](https://docs.docker.com/get-docker/) and Python.
 
+Push the system limit by improving the constraint on maximal thread number.
+
+```bash
+ulimit -n 1000
+export COMPOSE_HTTP_TIMEOUT=1000
+export COMPOSE_PARALLEL_LIMIT=10
+```
+
 To run the emulation of constellation, fist run the `build_script.py` in `DockerMultiContainer` folder to generate the bash files.
 
 ```bash
