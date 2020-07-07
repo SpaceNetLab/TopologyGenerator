@@ -11,6 +11,8 @@ Push the system limit by improving the constraint on maximal thread number.
 ulimit -n 1000
 export COMPOSE_HTTP_TIMEOUT=1000
 export COMPOSE_PARALLEL_LIMIT=10
+docker-compose down —remove-orphans
+docker network prune
 ```
 
 To run the emulation of constellation, fist run the `build_script.py` in `DockerMultiContainer` folder to generate the bash files.
