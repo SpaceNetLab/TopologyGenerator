@@ -9,11 +9,20 @@ def create_file_if_not_exit(filename):
         except OSError as exc:  # Guard against race condition
             if exc.errno != errno.EEXIST:
                 raise
+def assign_network(orbit_number):
+    if(orbit_number>0 and orbit_number<=500):
+        network_number = 0;
+    elif(orbit_number>500 and orbit_number<=1000):
+        network_number = 1;
+    else:
+        network_number = 2;
+
+    return network_number;
 
 #StarLink constellation: 1584 satellites into 72 orbital planes of 22 satellites each
 def main():
-    orbital_plane_num=72;
-    satellite_per_plan=22;
+    orbital_plane_num=1584;
+    satellite_per_plan=1;
     for orbit_number in range(orbital_plane_num):
         filename = "starlink/" + "orbit_" + str(orbit_number) + "/docker-compose.yml";
         create_file_if_not_exit(filename);
@@ -33,7 +42,7 @@ def main():
         network="networks:\n"\
                 "  default:\n"\
                 "    external:\n"\
-                "      name: star_bridge\n"
+                "      name: star_bridge_" + str(assign_network(orbit_number)) + "\n"
         f.write(network);
         # close file.
         f.close();

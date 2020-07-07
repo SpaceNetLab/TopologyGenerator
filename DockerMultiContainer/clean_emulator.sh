@@ -1,7 +1,12 @@
 #!/bin/bash
 #build the constellation of starlink, where 1584 satellites into 72 orbital planes of 22 satellites each
-ORBIT_NUM=72
-SATELLITE_PER_ORBIT=22
+ORBIT_NUM=1584
+SATELLITE_PER_ORBIT=1
+
+#remove bridges
+docker network rm star_bridge_0
+docker network rm star_bridge_1
+docker network rm star_bridge_2
 
 for i in `seq 1 $ORBIT_NUM`;
 do
@@ -10,6 +15,9 @@ do
   echo $DOCKER_YML_PATH
   cd $DOCKER_YML_PATH
   pwd
-  docker-compose down
+  docker-compose down --remove-orphans
   cd ../..
 done
+
+docker network prune & y
+rm -r starlink
