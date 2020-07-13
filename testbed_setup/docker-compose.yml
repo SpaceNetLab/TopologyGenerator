@@ -1,44 +1,89 @@
 version: '3'
 
 services:
-    starperf_source_server:
+    starfront_source_server:
         image: lzq8272587/starperf_source:latest
-        container_name: starperf_source
+        container_name: starfront_source
         ports:
             - "8888:8888"
         volumes:
             - ./source_data:/build
         networks:
-            - source_cloud_edge_net
-            - source_satellite_edge_net
+            source_cloud_edge_net:
+                ipv4_address: 192.168.100.100
+            source_satellite_edge_net:
+                ipv4_address: 192.168.101.100
             
         tty: true      
         
-    starperf_cloud_edge_server:
+    starfront_cloud_server:
         image: lzq8272587/starperf_source:latest
-        container_name: starperf_cloud_edge
+        container_name: starfront_cloud_edge
         ports:
             - "9999:9999"
         volumes:
             - ./edge_data:/build
         networks:
-            - source_cloud_edge_net
+            source_cloud_edge_net:
+                ipv4_address: 192.168.100.101
+            cloud_edge_client_net:
+                ipv4_address: 192.168.103.100
         tty: true
 
-    starperf_cloud_satellite_server:
+    starfront_satellite_server:
         image: lzq8272587/starperf_source:latest
-        container_name: starperf_satellite_edge
+        container_name: starfront_satellite_edge
         ports:
             - "7777:7777"
         volumes:
             - ./edge_data:/build
         networks:
-            - source_satellite_edge_net
+            source_satellite_edge_net:
+                ipv4_address: 192.168.101.101
+            satellite_edge_client_net:
+                ipv4_address: 192.168.102.100
+        tty: true
+
+    starfront_client:
+        image: lzq8272587/starperf_source:latest
+        container_name: starfront_client
+        ports:
+            - "6666:6666"
+        volumes:
+            - ./:/build
+        networks:
+            satellite_edge_client_net:
+                ipv4_address: 192.168.102.101
+            cloud_edge_client_net:
+                ipv4_address: 192.168.103.101
         tty: true
         
 networks:
     source_cloud_edge_net:
         driver: bridge
+        ipam:
+            config:
+                - subnet: 192.168.100.0/24
         
     source_satellite_edge_net:
         driver: bridge
+        ipam:
+            config:
+                - subnet: 192.168.101.0/24
+                  #gateway: 192.168.101.1
+
+    satellite_edge_client_net:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 192.168.102.0/24
+                  #gateway: 192.168.102.1
+    
+    cloud_edge_client_net:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 192.168.103.0/24
+                  #gateway: 192.168.103.1
+
+    
