@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+    starperf_source_server:
+        image: lzq8272587/starperf_source:latest
+        container_name: starperf_source
+        ports:
+            - "8888:8888"
+        volumes:
+            - ./source_data:/build
+        networks:
+            - source_cloud_edge_net
+            - source_satellite_edge_net
+            
+        tty: true      
+        
+    starperf_cloud_edge_server:
+        image: lzq8272587/starperf_source:latest
+        container_name: starperf_cloud_edge
+        ports:
+            - "9999:9999"
+        volumes:
+            - ./edge_data:/build
+        networks:
+            - source_cloud_edge_net
+        tty: true
+
+    starperf_cloud_satellite_server:
+        image: lzq8272587/starperf_source:latest
+        container_name: starperf_satellite_edge
+        ports:
+            - "7777:7777"
+        volumes:
+            - ./edge_data:/build
+        networks:
+            - source_satellite_edge_net
+        tty: true
+        
+networks:
+    source_cloud_edge_net:
+        driver: bridge
+        
+    source_satellite_edge_net:
+        driver: bridge
