@@ -2,7 +2,7 @@ version: '3'
 
 services:
     starfront_source_server:
-        image: lzq8272587/starperf_source:latest
+        image: lzq8272587/starfront_source:latest
         container_name: starfront_source
         ports:
             - "8888:8888"
@@ -17,7 +17,7 @@ services:
         tty: true      
         
     starfront_cloud_server:
-        image: lzq8272587/starperf_source:latest
+        image: lzq8272587/starfront_cloud_edge:latest
         container_name: starfront_cloud_edge
         ports:
             - "9999:9999"
@@ -31,7 +31,7 @@ services:
         tty: true
 
     starfront_satellite_server:
-        image: lzq8272587/starperf_source:latest
+        image: lzq8272587/starfront_satellite_edge:latest
         container_name: starfront_satellite_edge
         ports:
             - "7777:7777"
@@ -45,7 +45,7 @@ services:
         tty: true
 
     starfront_client:
-        image: lzq8272587/starperf_source:latest
+        image: lzq8272587/starfront_client:latest
         container_name: starfront_client
         ports:
             - "6666:6666"
