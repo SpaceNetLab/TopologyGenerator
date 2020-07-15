@@ -8,8 +8,8 @@ import requests
 import time
 import copy
 
-url_satellite = "starfront.satellite.com/objects/";
-url_cloud = "starfront.cloud.com/objects/";
+url_satellite = "http://starfront.satellite.com/objects/";
+url_cloud = "http://starfront.cloud.com/objects/";
 
 def fetch_object(url, times):
     result_list = url;
