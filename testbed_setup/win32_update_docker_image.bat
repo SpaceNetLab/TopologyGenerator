@@ -1,0 +1,11 @@
+docker commit starfront_source lzq8272587/starfront_source
+docker push lzq8272587/starfront_source
+
+docker commit starfront_satellite_edge lzq8272587/starfront_satellite_edge
+docker push lzq8272587/starfront_satellite_edge
+
+docker commit starfront_cloud_edge lzq8272587/starfront_cloud_edge
+docker push lzq8272587/starfront_cloud_edge
+
+docker commit starfront_client lzq8272587/starfront_client
+docker push lzq8272587/starfront_client
