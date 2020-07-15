@@ -17,10 +17,10 @@ def fetch_object(url, times):
     for i in range(times):
         start_time = time.time();
         response = requests.get(url)
-        print(response.headers);
-       # print(response.content);
-       # print(response.elapsed);
-        print("Latency:" + str(time.time() - start_time));
+        #print(response.headers);
+        # print(response.content);
+        # print(response.elapsed);
+        print("Latency:" + str(time.time() - start_time) + "elapsed:" + str(response.elapsed));
         latency = (time.time() - start_time);
         #save latency sample.
         result_list = result_list + "," + str(latency)
