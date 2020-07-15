@@ -10,6 +10,7 @@ import copy
 
 url_satellite = "http://starfront.satellite.com/objects/";
 url_cloud = "http://starfront.cloud.com/objects/";
+repeat = 100
 
 def fetch_object(url, times):
     result_list = url;
@@ -17,9 +18,9 @@ def fetch_object(url, times):
         start_time = time.time();
         response = requests.get(url)
         print(response.headers);
-        print(response.content);
-        print(response.elapsed);
-        print((time.time() - start_time));
+       # print(response.content);
+       # print(response.elapsed);
+        print("Latency:" + str(time.time() - start_time));
         latency = (time.time() - start_time);
         #save latency sample.
         result_list = result_list + "," + str(latency)
@@ -39,19 +40,19 @@ def main():
     results = [];
     # fetch 1KB/10KB/100KB/1MB object for 1000 times
     url = url_satellite + "random_1K.data"
-    results.append(copy.deepcopy(fetch_object(url, 1000)))
+    results.append(copy.deepcopy(fetch_object(url, repeat)))
 
     url = url_satellite + "random_10K.data"
-    results.append(copy.deepcopy(fetch_object(url, 1000)))
+    results.append(copy.deepcopy(fetch_object(url, repeat)))
 
     url = url_satellite + "random_100K.data"
-    results.append(copy.deepcopy(fetch_object(url, 1000)))
+    results.append(copy.deepcopy(fetch_object(url, repeat)))
 
     url = url_satellite + "random_1M.data"
-    results.append(copy.deepcopy(fetch_object(url, 1000)))
+    results.append(copy.deepcopy(fetch_object(url, repeat)))
 
     # save logs
-    log = "log.csv"
+    log = "log/log.csv"
     create_file_if_not_exit(log)
     f = open(log, "w+")
     for line in results:
