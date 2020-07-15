@@ -5,7 +5,7 @@ services:
         image: lzq8272587/starfront_source:latest
         container_name: starfront_source
         ports:
-            - "8888:8888"
+            - "8080:8080"
         volumes:
             - ./source_data:/build
         networks:
@@ -15,6 +15,9 @@ services:
                 ipv4_address: 192.168.101.100
             
         tty: true      
+        cap_add:
+            - ALL
+        
         
     starfront_cloud_server:
         image: lzq8272587/starfront_cloud_edge:latest
@@ -29,6 +32,9 @@ services:
             cloud_edge_client_net:
                 ipv4_address: 192.168.103.100
         tty: true
+        cap_add:
+            - ALL
+
 
     starfront_satellite_server:
         image: lzq8272587/starfront_satellite_edge:latest
@@ -43,7 +49,10 @@ services:
             satellite_edge_client_net:
                 ipv4_address: 192.168.102.100
         tty: true
-
+        cap_add:
+            - ALL
+            
+            
     starfront_client:
         image: lzq8272587/starfront_client:latest
         container_name: starfront_client
@@ -60,7 +69,9 @@ services:
         extra_hosts:
             starfront.cloud.com: 192.168.103.100
             starfront.satellite.com: 192.168.102.100
-        
+        cap_add:
+            - ALL
+            
 networks:
     source_cloud_edge_net:
         driver: bridge
