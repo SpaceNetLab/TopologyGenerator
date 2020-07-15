@@ -38,6 +38,7 @@ DockerMultiContainer/starlink
 *_g
 \#*
 .\#*
+*.data
 
 *.264
 *.h264
