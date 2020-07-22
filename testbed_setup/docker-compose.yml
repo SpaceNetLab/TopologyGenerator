@@ -13,7 +13,7 @@ services:
                 ipv4_address: 192.168.100.100
             source_satellite_edge_net:
                 ipv4_address: 192.168.101.100
-            
+        privileged: true    
         tty: true      
         cap_add:
             - ALL
@@ -34,6 +34,7 @@ services:
         tty: true
         cap_add:
             - ALL
+        privileged: true
 
 
     starfront_satellite_server:
@@ -49,6 +50,7 @@ services:
             satellite_edge_client_net:
                 ipv4_address: 192.168.102.100
         tty: true
+        privileged: true
         cap_add:
             - ALL
             
@@ -66,6 +68,7 @@ services:
             cloud_edge_client_net:
                 ipv4_address: 192.168.103.101
         tty: true
+        privileged: true
         extra_hosts:
             starfront.cloud.com: 192.168.103.100
             starfront.satellite.com: 192.168.102.100
