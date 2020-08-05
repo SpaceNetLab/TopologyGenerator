@@ -2,6 +2,7 @@
 import os
 import errno
 
+size_set = [1<<10,10<<10,100<<10,500<<10,1<<20,5<<20,10<<20]
 
 def create_file_if_not_exit(filename):
     if not os.path.exists(os.path.dirname(filename)):
@@ -14,10 +15,14 @@ def create_file_if_not_exit(filename):
 def main():
     print("Generating random object in objects folder.")
     filename_list = [];
+    for _size in size_set:
+        filename_list.append(("objects/"+str(_size),_size))
+    '''
     filename_list.append(("objects/random_1K.data", 1024))
     filename_list.append(("objects/random_10K.data", 1024*10))
     filename_list.append(("objects/random_100K.data", 1024*100))
     filename_list.append(("objects/random_1M.data", 1024*1024))
+    '''
 
     for filename in filename_list:
         name = filename[0];

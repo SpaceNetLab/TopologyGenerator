@@ -31,8 +31,8 @@ def get_actual_size(size):
                 return actual_size
 
 def get_url(actul_size):
-    return "https://www.baidu.com/"
-    #return "http://192.168.100.100/"+str(actul_size)
+    #return "https://www.baidu.com/"
+    return "http://192.168.100.100/objects/"+str(actul_size)
 
 
 def do_request(seq, size, sip = "0.0.0.0", observpoint = "default"):
