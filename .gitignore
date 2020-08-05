@@ -122,3 +122,4 @@ contents.xcworkspacedata
 *.bin
 *.make
 
+client/cdn_requests.csv

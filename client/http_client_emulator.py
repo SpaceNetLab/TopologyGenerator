@@ -7,10 +7,13 @@ import errno
 import requests
 import time
 import copy
+import sched
 
 url_satellite = "http://starfront.satellite.com/objects/";
 url_cloud = "http://starfront.cloud.com/objects/";
 repeat = 100
+
+
 
 def fetch_object(url, times):
     result_list = url;
@@ -64,4 +67,5 @@ def main():
 
 
 if __name__== "__main__":
-    main();
+    print (1)
+    main()
