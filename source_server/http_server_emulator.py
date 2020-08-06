@@ -43,10 +43,10 @@ def handle_client(client_socket):
         # 构造响应数据
         response_start_line = "HTTP/1.1 200 OK\r\n"
         response_headers = "Server: My server\r\n"
-        response_body = file_data.decode("utf-8")
+        response_body = file_data.decode("utf-8","ignore")
 
     response = response_start_line + response_headers + "\r\n" + response_body
-    print("response data:", response)
+    #print("response data:", response)
 
     # 向客户端返回响应数据
     client_socket.send(bytes(response, "utf-8"))
@@ -69,12 +69,12 @@ def main():
 if __name__== "__main__":
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    server_socket.bind(("", 8000))
+    server_socket.bind(("", 8080))
     server_socket.listen(128)
 
     while True:
         client_socket, client_address = server_socket.accept()
-        print("[%s, %s]用户连接上了" % client_address)
+        print("[%s, %s]Client connected." % client_address)
         handle_client_process = Process(target=handle_client, args=(client_socket,))
         handle_client_process.start()
         client_socket.close()
