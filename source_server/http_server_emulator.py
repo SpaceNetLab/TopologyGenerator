@@ -5,6 +5,7 @@ import csv
 import errno
 import socket
 import re
+import threading
 
 from multiprocessing import Process
 
@@ -75,6 +76,6 @@ if __name__== "__main__":
     while True:
         client_socket, client_address = server_socket.accept()
         print("[%s, %s]Client connected." % client_address)
-        handle_client_process = Process(target=handle_client, args=(client_socket,))
-        handle_client_process.start()
-        client_socket.close()
+        threading.Thread(target=handle_client,args=(client_socket,)).start()
+        #handle_client_process = Process(target=handle_client, args=(client_socket,))
+        #handle_client_process.start()
