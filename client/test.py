@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import sys
 import os
 import json
 import csv
@@ -32,7 +33,7 @@ def get_actual_size(size):
 
 def get_url(actul_size):
     #return "https://www.baidu.com/"
-    return "http://192.168.100.100/objects/"+str(actul_size)
+    return "http://192.168.100.100:8080/objects/"+str(actul_size)
 
 
 def do_request(seq, size, sip = "0.0.0.0", observpoint = "default"):
@@ -41,6 +42,7 @@ def do_request(seq, size, sip = "0.0.0.0", observpoint = "default"):
     start_time = time.time()
     response = requests.get(url)
     latency = (time.time() - start_time)
+    print(sys.getsizeof(response.content))
     print("[" +seq+"] " + " start_time:"+str(start_time)+" Size:"+ str(size) + " actual_size:"+str(actual_size)+" Latency:" + str(latency) + " elapsed:" + str(response.elapsed))
     
     
@@ -53,7 +55,7 @@ def main():
     with open('cdn_requests_10M.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         data = list(reader)
-        data = data[:10]
+        data = data[:20]
         row_count = len(data)
         print("request_num:",row_count)
         time_first_request = int(data[0][1])
@@ -76,7 +78,7 @@ def main():
 
     print(results)
 
-    res = "res/cdn_requests_10M_res.csv"
+    res = "res/cdn_requests_10M_res_bed_complete.csv"
     create_file_if_not_exit(res)
     f = open(res, "w+")
     for line in results:
