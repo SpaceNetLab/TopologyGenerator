@@ -50,7 +50,14 @@ def do_request(seq, size, sip = "0.0.0.0", obser_vpoint = "default"):
     results.append(seq+", "+str(start_time)+", "+ str(size) +", "+str(actual_size)+", "+str(latency) +", "+str(response.elapsed))
 
 def request_thread(seq, size, sip = "0.0.0.0", observ_point = "default"):
-    threading.Thread(target=do_request, args=(seq,size,sip,observ_point)).start()
+    thread = threading.Thread(target=do_request, args=(seq,size,sip,observ_point))
+    thread.start()
+    print("[" +seq+"] " + "thread started... ")
+
+def request_thread_last(seq, size, sip = "0.0.0.0", observ_point = "default"):
+    thread = threading.Thread(target=do_request, args=(seq,size,sip,observ_point))
+    thread.start()
+    thread.join()
     print("[" +seq+"] " + "thread started... ")
 
 
@@ -60,7 +67,7 @@ def main():
     with open('cdn_requests_10M.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         data = list(reader)
-        data = data[:20]
+        data = data[:500]
         row_count = len(data)
         print("request_num:",row_count)
         time_first_request = int(data[0][1])
@@ -75,12 +82,17 @@ def main():
             else:
                 pri=0
             time_last_request = time_this_request
+            '''
+            if row[0] == row_count-1:
+                s.enter((time_this_request-time_first_request)/1000,pri,request_thread_last,argument=(row[0],int(row[3]),)) 
+            else:'''
             s.enter((time_this_request-time_first_request)/1000,pri,request_thread,argument=(row[0],int(row[3]),))
             print(row[0]+" scheduled: "+ str((time_this_request-time_first_request)/1000)+","+str(pri)+","+str(int(row[3])))
     
     time_run = time.time()
     print("time_run:",time_run)
-    s.run()
+    s.run(blocking=True)
+    time.sleep(10)
     print("time_run:",time_run)
     print("time_finish:",time.time())
 
