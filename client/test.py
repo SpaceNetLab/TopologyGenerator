@@ -12,9 +12,9 @@ import copy
 import sched
 s = sched.scheduler(time.time, time.sleep)
 
-arg_request_num = 100
-arg_sleep_time = 10
-arg_out_file_name = "res/cdn_requests_10M_res_bed_complete.csv"
+arg_request_num_default = 100
+arg_sleep_time_default = 10
+arg_out_file_name_default = "res/cdn_requests_10M_res_bed_complete.csv"
 
 results = []
 size_set = [1<<10,10<<10,100<<10,500<<10,1<<20,5<<20,10<<20]
@@ -69,10 +69,16 @@ def main(argv):
     argv_num = len(argv)
     if argv_num>1:
         arg_request_num = int(argv[1])
+    else:
+        arg_request_num = arg_request_num_default
     if argv_num>2:
         arg_sleep_time =  int(argv[2])
+    else:
+        arg_sleep_time = arg_sleep_time_default
     if argv_num>3:
         arg_out_file_name = argv[3]
+    else:
+        arg_out_file_name = arg_out_file_name_default
 
     time_start = time.time()
     print("time_start:",time_start)
