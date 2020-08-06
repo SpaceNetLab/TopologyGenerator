@@ -6,6 +6,7 @@ import csv
 import numpy as np
 import errno
 import requests
+import threading
 import time
 import copy
 import sched
@@ -36,7 +37,7 @@ def get_url(actul_size):
     return "http://192.168.100.100:8080/objects/"+str(actul_size)
 
 
-def do_request(seq, size, sip = "0.0.0.0", observpoint = "default"):
+def do_request(seq, size, sip = "0.0.0.0", obser_vpoint = "default"):
     actual_size = get_actual_size(size)
     url = get_url(actual_size)
     start_time = time.time()
@@ -47,6 +48,10 @@ def do_request(seq, size, sip = "0.0.0.0", observpoint = "default"):
     
     
     results.append(seq+", "+str(start_time)+", "+ str(size) +", "+str(actual_size)+", "+str(latency) +", "+str(response.elapsed))
+
+def request_thread(seq, size, sip = "0.0.0.0", observ_point = "default"):
+    threading.Thread(target=do_request, args=(seq,size,sip,observ_point)).start()
+    print("[" +seq+"] " + "thread started... ")
 
 
 def main():
@@ -70,13 +75,16 @@ def main():
             else:
                 pri=0
             time_last_request = time_this_request
-            s.enter((time_this_request-time_first_request)/1000,pri,do_request,argument=(row[0],int(row[3]),))
+            s.enter((time_this_request-time_first_request)/1000,pri,request_thread,argument=(row[0],int(row[3]),))
             print(row[0]+" scheduled: "+ str((time_this_request-time_first_request)/1000)+","+str(pri)+","+str(int(row[3])))
     
-    print("time_run:",time.time())
+    time_run = time.time()
+    print("time_run:",time_run)
     s.run()
+    print("time_run:",time_run)
+    print("time_finish:",time.time())
 
-    print(results)
+    print("results output start...")
 
     res = "res/cdn_requests_10M_res_bed_complete.csv"
     create_file_if_not_exit(res)
@@ -85,6 +93,9 @@ def main():
         f.write(line + "\n")
     f.flush()
     f.close()
+
+    print("results output end.")
+    print("exiting...")
 
 '''
     with open('cdn_requests_10M_res.csv', 'w', newline='') as csvfile:
