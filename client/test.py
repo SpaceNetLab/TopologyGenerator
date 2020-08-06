@@ -12,6 +12,10 @@ import copy
 import sched
 s = sched.scheduler(time.time, time.sleep)
 
+arg_request_num = 100
+arg_sleep_time = 10
+arg_out_file_name = "res/cdn_requests_10M_res_bed_complete.csv"
+
 results = []
 size_set = [1<<10,10<<10,100<<10,500<<10,1<<20,5<<20,10<<20]
 size_max = 10<<20
@@ -61,13 +65,21 @@ def request_thread_last(seq, size, sip = "0.0.0.0", observ_point = "default"):
     print("[" +seq+"] " + "thread started... ")
 
 
-def main():
+def main(argv):
+    argv_num = len(argv)
+    if argv_num>1:
+        arg_request_num = int(argv[1])
+    if argv_num>2:
+        arg_sleep_time =  int(argv[2])
+    if argv_num>3:
+        arg_out_file_name = argv[3]
+
     time_start = time.time()
     print("time_start:",time_start)
     with open('cdn_requests_10M.csv', newline='') as csvfile:
         reader = csv.reader(csvfile)
         data = list(reader)
-        data = data[:500]
+        data = data[:arg_request_num]
         row_count = len(data)
         print("request_num:",row_count)
         time_first_request = int(data[0][1])
@@ -92,13 +104,13 @@ def main():
     time_run = time.time()
     print("time_run:",time_run)
     s.run(blocking=True)
-    time.sleep(10)
+    time.sleep(arg_sleep_time)
     print("time_run:",time_run)
     print("time_finish:",time.time())
 
     print("results output start...")
 
-    res = "res/cdn_requests_10M_res_bed_complete.csv"
+    res = arg_out_file_name
     create_file_if_not_exit(res)
     f = open(res, "w+")
     for line in results:
@@ -119,4 +131,4 @@ def main():
 '''
 if __name__== "__main__":
     #print(size_set)
-    main()
+    main(sys.argv)
