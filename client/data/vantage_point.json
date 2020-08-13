@@ -1,0 +1,47 @@
+{
+  "num_of_vantage": "7",
+  "vantage_points": [
+    {
+      "name": "Phoenix-AZ-USA",
+      "lat": "33.41613888888889",
+      "lon": "-112.00916666666667",
+      "alt": "0"
+    },
+    {
+      "name": "Fremont-CA-USA",
+      "lat": "37.47247222222222",
+      "lon": "-121.92141666666667",
+      "alt": "0"
+    },
+    {
+      "name": "Roubaix-France",
+      "lat": "50.69277777777778",
+      "lon": "3.178111111111111",
+      "alt": "0"
+    },
+    {
+      "name": "Chizhevskogo-Kazakhstan",
+      "lat": "49.81733333333334",
+      "lon": "73.09452777777777",
+      "alt": "0"
+    },
+    {
+      "name": "Chelyabinskaya-Russia",
+      "lat": "55.16558333333333",
+      "lon": "61.433499999999995",
+      "alt": "0"
+    },
+    {
+      "name": "Johannesburg-South-Africa",
+      "lat": "-26.18691666666667",
+      "lon": "28.04363888888889",
+      "alt": "0"
+    },
+    {
+      "name": "Athanasios-Cyprus",
+      "lat": "34.70727777777778",
+      "lon": "33.06386111111111",
+      "alt": "0"
+    }
+  ]
+}
