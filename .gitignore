@@ -123,3 +123,4 @@ contents.xcworkspacedata
 *.make
 
 client/cdn_requests.csv
+client/data/satellite_lla_overtime.json
