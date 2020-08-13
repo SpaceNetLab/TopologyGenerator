@@ -1,0 +1,22 @@
+basic functions
+
+1. CSV数据预处理(request_data_generator)
+    输入：按时间(Unix时间戳)排序的，trace全体数据
+    参数：request_min_size, request_max_size, cycle_min, cycle_num, cycle_request_num,object_num,observ_num等
+    描述：按照参数要求，生成符合条件的request，生成对应的objects
+    输出：request_input.csv(seq,request_time,request_size,object_seq,observ_point)
+
+2. 问题解决算法
+    输入：request_input.csv(seq,request_time,request_size,object_seq,observ_point)
+    输出：
+        1. object_placement(object_seq,set(edges to place))
+        2. request_output.csv(seq,request_time,request_size,object_seq,observ_point,edge_sloved)
+
+3. testbed
+    输入：
+        1. request_output.csv(seq,request_time,request_size,object_seq,observ_point,edge_sloved)
+        2. 星历
+        3. CloudFront_POP_position
+    
+    输出：request_result.csv(seq,request_time,request_size,object_seq,observ_point,edge_sloved,latency,elapsed)
+    
