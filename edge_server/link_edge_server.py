@@ -33,7 +33,7 @@ if __name__== "__main__":
 
     server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    server.bind(('localhost',9090)) #绑定要监听的端口
+    server.bind(('0.0.0.0',9090)) #绑定要监听的端口
     server.listen(5) #开始监听 表示可以使用五个链接排队】
 
     print(whoami +" Started")
