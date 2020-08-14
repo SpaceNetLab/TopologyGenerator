@@ -124,3 +124,8 @@ contents.xcworkspacedata
 
 client/cdn_requests.csv
 client/data/satellite_lla_overtime.json
+client/assignment-row.csv
+client/cloudfront.json
+client/request.json
+client/satellite_lla_overtime.json
+client/vantage_point.json
