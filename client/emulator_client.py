@@ -186,7 +186,7 @@ def main(argv):
             latency = (time.time() - start_time)
             #print("[" +seq+"] " + " start_time:"+str(start_time)+" Size:"+ str(size) + " actual_size:"+str(actual_size)+" Latency:" + str(latency) + " elapsed:" + str(response.elapsed))
             
-            results.append(request['seq']+", "+str(request_time)+", "+ str(request_size) +", "+ request_src['name']+", "+request_dst+","+str(latency) +", "+str(response.elapsed))
+            results.append(str(request['seq'])+", "+str(request_time)+", "+ str(request_size) +", "+ request_src['name']+", "+request_dst+","+str(latency) +", "+str(response.elapsed))
             print(results[-1])
     
     print("results output start...")
