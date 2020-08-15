@@ -25,8 +25,15 @@ light_of_speed_km_ms = light_of_speed_m_s / (10 ** 6)
 
 RTT_random_MAX = 0.1
 results=[]
-arg_out_file_name = "res/cdn_requests_10M_res_bed_both.csv"
+#arg_out_file_name = "res/cdn_requests_10M_res_bed_both.csv"
 #arg_out_file_name = "res/cdn_requests_10M_res_bed_only_cloud.csv"
+#arg_out_file_name = "res/cdn_requests_10M_res_bed_closest.csv"
+#arg_out_file_name = "res/cdn_requests_10M_res_bed_50%cost.csv"
+arg_out_file_name = "res/cdn_requests_10M_res_bed_oneweb_4.csv"
+
+assignment_input_file = 'res/assignment-row-oneweb.csv'
+assign_start = 0 #the assignment's title in csv
+algo_index = [2,4,6,8]
 
 class node_entry:
     def __init__(self):
@@ -113,81 +120,83 @@ def main(argv):
     satellite_last_slot = {}
 
     #read request resolve info(the result of Algorithm)
-    with open('assignment-row.csv', newline='') as csvfile:
+    with open(assignment_input_file, newline='') as csvfile:
         reader = csv.reader(csvfile)
         assignment = list(reader)
-        for request in request_data:
-            request_seq = int(request['seq'])
-            request_time = int(int(request['request_time'])/1000/60) #slot
-            request_size = int(request['request_size']) # unit: byte
-            request_src = vantage_list[int(request['observ_point'])]
-            request_dst = assignment[request_seq][3] #1:only-cloud 3:cloud-satellite
+        assignment = assignment[assign_start:]
+        for algo in algo_index:
+            for request in request_data:
+                request_seq = int(request['seq'])
+                request_time = int(int(request['request_time'])/1000/60) #slot
+                request_size = int(request['request_size']) # unit: byte
+                request_src = vantage_list[int(request['observ_point'])]
+                request_dst = assignment[request_seq][algo] #1:only-cloud 3:cloud-satellite
 
-            node = node_entry()
-            node.name = "Request-from-" + str(request['observ_point']) + '-slot-' + str(request_time) + '-size-' + str(request_size)
-            node.lat = float(request_src['lat'])
-            node.lon = float(request_src['lon'])
-            node.alt = float(request_src['alt'])
-            
-            RTT = 0.0
-        #for every request, calculate RTT and send to the edge server
-            #cloud
-            if request_dst[0]=='C':
-                cloud_seq = int(request_dst[1:])
-                if cloud_RTT.__contains__(cloud_seq):
-                    RTT = cloud_RTT[cloud_seq]
-                else:
-                    cloud_info = cloud_data['cities'][cloud_seq-1]
-                    cloud_node = node_entry()
-                    cloud_node.lat = float(cloud_info['lat'])
-                    cloud_node.lon = float(cloud_info['lon'])
-                    cloud_node.alt = float(cloud_info['alt'])
-                    RTT = estimate_RTT_via_location(node, cloud_node, light_of_speed_km_ms * terrestrial_attenuation_factor)
-                    cloud_RTT[cloud_seq] = RTT
-                RTT = RTT * (1+random.uniform(0,RTT_random_MAX))
-                link_info = str(request['seq'])+","+request_dst+","+str(request_time)+","+str(RTT)
-                print(link_info)
+                node = node_entry()
+                node.name = "Request-from-" + str(request['observ_point']) + '-slot-' + str(request_time) + '-size-' + str(request_size)
+                node.lat = float(request_src['lat'])
+                node.lon = float(request_src['lon'])
+                node.alt = float(request_src['alt'])
                 
-                link_c.send(link_info.encode('utf-8')) 
-                data = link_c.recv(1024)
-                print('back:',data.decode())
-                #send link_info
-            #satellite
-            elif request_dst[0]=='S':
-                sat_seq = int(request_dst[1:])
-                if satellite_last_slot.__contains__(sat_seq) and request_time == satellite_last_slot[sat_seq]:
-                    print("no sat link update")
-                else:
-                    sat_info = satellite_data['snapshot_sequence'][request_time]['snapshot'][sat_seq-1]
-                    sat_node = node_entry()
-                    sat_node.lat = float(sat_info['lat'])
-                    sat_node.lon = float(sat_info['lon'])
-                    sat_node.alt = float(sat_info['alt'])
-                    RTT = estimate_RTT_via_location(node, sat_node, light_of_speed_km_ms * space_attenuation_factor)
+                RTT = 0.0
+                #for every request, calculate RTT and send to the edge server
+                #cloud
+                if request_dst[0]=='C':
+                    cloud_seq = int(request_dst[1:])
+                    if cloud_RTT.__contains__(cloud_seq):
+                        RTT = cloud_RTT[cloud_seq]
+                    else:
+                        cloud_info = cloud_data['cities'][cloud_seq-1]
+                        cloud_node = node_entry()
+                        cloud_node.lat = float(cloud_info['lat'])
+                        cloud_node.lon = float(cloud_info['lon'])
+                        cloud_node.alt = float(cloud_info['alt'])
+                        RTT = estimate_RTT_via_location(node, cloud_node, light_of_speed_km_ms * terrestrial_attenuation_factor)
+                        cloud_RTT[cloud_seq] = RTT
                     RTT = RTT * (1+random.uniform(0,RTT_random_MAX))
-                    satellite_last_slot[sat_seq] = request_time
                     link_info = str(request['seq'])+","+request_dst+","+str(request_time)+","+str(RTT)
                     print(link_info)
+                    
+                    link_c.send(link_info.encode('utf-8')) 
+                    #data = link_c.recv(1024)
+                    #print('back:',data.decode())
+                    #send link_info
+                #satellite
+                elif request_dst[0]=='S':
+                    sat_seq = int(request_dst[1:])
+                    if satellite_last_slot.__contains__(sat_seq) and request_time == satellite_last_slot[sat_seq]:
+                        print("no sat link update")
+                    else:
+                        sat_info = satellite_data['snapshot_sequence'][request_time]['snapshot'][sat_seq-1]
+                        sat_node = node_entry()
+                        sat_node.lat = float(sat_info['lat'])
+                        sat_node.lon = float(sat_info['lon'])
+                        sat_node.alt = float(sat_info['alt'])
+                        RTT = estimate_RTT_via_location(node, sat_node, light_of_speed_km_ms * space_attenuation_factor)
+                        RTT = RTT * (1+random.uniform(0,RTT_random_MAX))
+                        satellite_last_slot[sat_seq] = request_time
+                        link_info = str(request['seq'])+","+request_dst+","+str(request_time)+","+str(RTT)
+                        print(link_info)
 
-                    link_s.send(link_info.encode('utf-8')) 
-                    data = link_s.recv(1024)
-                    print('back:',data.decode())
-            else:
-                print("CDN edge resolve failure")
-    #send request, get result
-            url=''
-            if request_dst[0]=='C':
-                url = url_cloud+str(request_size)
-            else:
-                url = url_satellite+str(request_size)
-            
-            start_time = time.time()
-            response = requests.get(url)
-            latency = (time.time() - start_time)
-            #print("[" +seq+"] " + " start_time:"+str(start_time)+" Size:"+ str(size) + " actual_size:"+str(actual_size)+" Latency:" + str(latency) + " elapsed:" + str(response.elapsed))
-            
-            results.append(str(request['seq'])+", "+str(request_time)+", "+ str(request_size) +", "+ request_src['name']+", "+request_dst+","+str(latency) +", "+str(response.elapsed))
-            print(results[-1])
+                        link_s.send(link_info.encode('utf-8')) 
+                        #data = link_s.recv(1024)
+                        #print('back:',data.decode())
+                else:
+                    print("CDN edge resolve failure")
+                #send request, get result
+                url=''
+                if request_dst[0]=='C':
+                    url = url_cloud+str(request_size)
+                else:
+                    url = url_satellite+str(request_size)
+                
+                start_time = time.time()
+                response = requests.get(url)
+                latency = (time.time() - start_time)
+                #print("[" +seq+"] " + " start_time:"+str(start_time)+" Size:"+ str(size) + " actual_size:"+str(actual_size)+" Latency:" + str(latency) + " elapsed:" + str(response.elapsed))
+                
+                results.append(str(request['seq'])+", "+str(request_time)+", "+ str(request_size) +", "+ request_src['name']+", "+request_dst+","+str(latency) +", "+str(response.elapsed))
+                print(results[-1])
     
     print("results output start...")
 
@@ -218,6 +227,6 @@ def main(argv):
 
 if __name__== "__main__":
     #print(size_set)
-    #init()
+    init()
     main(sys.argv)
     
